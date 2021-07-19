@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-deployment-2-1
+  labels:
+    app: deployment-2-1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: deployment-2-1
+  template:
+    metadata:
+      labels:
+        app: deployment-2-1
+        service_class: "2"
+    spec:
+      schedulerName: qos-scheduler
+      containers:
+      - name: container-2-1
+        image: dragnoid99/app:latest
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8000

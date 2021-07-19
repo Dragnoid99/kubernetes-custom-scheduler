@@ -1,0 +1,14 @@
+<h1>Question 1 of other server</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'app:results'%}" method="post">
+<!-- {% csrf_token %} -->
+<input type="radio" name="choice" id="1" value="1">
+<label for="choice1">Choose choice 1</label><br>
+<input type="radio" name="choice" id="2" value="2">
+<label for="choice2">Choose choice 2</label><br>
+<input type="radio" name="choice" id="3" value="3">
+<label for="choice3">Choose choice 3</label><br>
+<input type="submit" value="Vote">
+</form>
