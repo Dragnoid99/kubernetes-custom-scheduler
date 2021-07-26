@@ -15,7 +15,7 @@ spec:
         app: deployment-0-1
         service_class: "0"
     spec:
-      schedulerName: qos-scheduler
+      #schedulerName: qos-scheduler
       containers:
       - name: container-0-1
         image: dragnoid99/app:latest
