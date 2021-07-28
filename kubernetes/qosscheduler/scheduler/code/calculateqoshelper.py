@@ -7,11 +7,12 @@ from dateutil import parser
 import pickle
 from kubernetes.client import configuration
 import random
-from helpers import cpu_convert, mem_convert, get_pod_object, get_deployment, is_valid_pod, is_valid_node, is_smaller, is_equal, time_difference
+from helpers import cpu_convert, mem_convert, get_pod_object, get_deployment, is_valid_pod, is_valid_node
 
 # Import Kubernetes configurations
 config.load_incluster_config()
 v1 = client.CoreV1Api()
+
 
 def get_pod_deployments():
 
@@ -22,7 +23,7 @@ def get_pod_deployments():
 
   dbfile = open('../files/deployment_pickle', 'wb')
 
-  pods = v1.list_namespaced_pod("default")
+  pods = v1.list_namespaced_pod('default')
 
   # Update the deployment names of pods are running and which was not updated earlier
   for pod in pods.items:
@@ -34,7 +35,7 @@ def get_pod_deployments():
       else:
         try:
           pod_gen_name = pod.metadata.generate_name
-          pod_hash = "-"+pod.metadata.labels['pod-template-hash']+"-"
+          pod_hash = '-' + pod.metadata.labels['pod-template-hash'] + '-'
           length = len(pod_hash)
 
           deploy_name = pod_gen_name[:-length]
@@ -58,7 +59,7 @@ def get_pod_creation_timestamps():
   dbfile.close()
 
   dbfile = open('../files/pod_creation_pickle', 'wb')
-  pods = v1.list_namespaced_pod("default")
+  pods = v1.list_namespaced_pod('default')
 
   # Update the creation timestamp of pods that were created recently
   for pod in pods.items:
@@ -67,7 +68,8 @@ def get_pod_creation_timestamps():
     if pod.metadata.name not in pod_creation:
       time = pod.metadata.creation_timestamp
       # Note, we have to convert UTC to IST as all LOKI timestamps are in IST
-      pod_creation[pod.metadata.name] = time #+ datetime.timedelta(hours=5, minutes=30) 
+      pod_creation[
+          pod.metadata.name] = time  #+ datetime.timedelta(hours=5, minutes=30)
 
   # Update the creation timestamps of pod in the file
   pickle.dump(pod_creation, dbfile)
@@ -84,7 +86,7 @@ def get_deployment_slos(pod_deployment, slo):
   dbfile.close()
 
   dbfile = open('../files/deployment_slo', 'wb')
-  pods = v1.list_namespaced_pod("default")
+  pods = v1.list_namespaced_pod('default')
   # Update deployment_slo for the current running pods
   for pod in pods.items:
     if is_valid_pod(pod.metadata.name) == False:
@@ -118,7 +120,7 @@ def get_pod_deletion_timestamps():
 
   # new_pods_active is the dictionary of pods that are currently active
   new_pods_active = {}
-  pods = v1.list_namespaced_pod("default")
+  pods = v1.list_namespaced_pod('default')
   for pod in pods.items:
     if is_valid_pod(pod.metadata.name) == False:
       continue
@@ -139,10 +141,10 @@ def get_pod_deletion_timestamps():
   # Max error of the difference in deletion timestamp = time period of calling this function
   for pod in pods_active:
     if pod not in new_pods_active and pod not in pod_deletion:
-      time = datetime.datetime.now(tz = IST)
+      time = datetime.datetime.now(tz=IST)
       pod_deletion[pod] = time
 
-  # Update the pod deletion timestamp in the pod_deletion_pickle file 
+  # Update the pod deletion timestamp in the pod_deletion_pickle file
   pickle.dump(pod_deletion, dbfile)
   dbfile.close()
 
