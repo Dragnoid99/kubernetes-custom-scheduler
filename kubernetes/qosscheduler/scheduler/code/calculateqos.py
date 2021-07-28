@@ -238,5 +238,9 @@ def get_all_pod_qos(slo):
   pickle.dump(deployment_qos, dbfile)
   dbfile.close()
 
+  dbfile = open('../files/deployment_qos_metric', 'wb')
+  pickle.dump(deployment_qos_metric, dbfile)
+  dbfile.close()
+
 
   return deployment_qos_metric
