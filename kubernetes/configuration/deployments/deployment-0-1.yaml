@@ -6,6 +6,15 @@ metadata:
     app: deployment-0-1 
 value: 3
 spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: node-type
+            operator: In
+            values:
+            - available
   replicas: 1 
   selector:
     matchLabels:
