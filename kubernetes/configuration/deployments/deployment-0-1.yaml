@@ -4,6 +4,7 @@ metadata:
   name: dep-deployment-0-1
   labels:
     app: deployment-0-1 
+value: 3
 spec:
   replicas: 1 
   selector:
