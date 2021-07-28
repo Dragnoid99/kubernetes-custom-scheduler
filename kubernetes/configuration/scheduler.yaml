@@ -3,6 +3,15 @@ kind: Pod
 metadata:
   name: qos-scheduler-pod
 spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: node-type
+            operator: In
+            values:
+            - restricted
   serviceAccountName: serviceaccount
   containers:
   - name: qos-scheduler-container
