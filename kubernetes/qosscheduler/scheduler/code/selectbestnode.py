@@ -8,7 +8,7 @@ import pickle
 from kubernetes.client import configuration
 import random
 from containerpackingalgo import container_packing_algorithm
-from helpers import cpu_convert, mem_convert, get_pod_object, get_deployment, is_valid_pod, is_valid_node, is_smaller, is_equal, time_difference
+from helpers import cpu_convert, mem_convert, get_pod_object, get_deployment, is_valid_pod, is_valid_node
 
 # Import Kubernetes configurations
 config.load_incluster_config()
@@ -70,8 +70,7 @@ def select_node_with_preemption(pod, nodes, preempt_pods_dict, pod_qos, number_o
 
   # Select node which will have the smallest tuple value
   for node in nodes:
-    # is_smaller(tuple1, tuple2) will return True if tuple1 is lexicographically smaller than tuple2
-    if is_smaller(node_tuple[node], smallest_tuple) == True:
+    if node_tuple[node]< smallest_tuple:
       best_node = node
       smallest_tuple = node_tuple[node]
 
