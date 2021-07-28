@@ -9,7 +9,7 @@ from kubernetes.client import configuration
 import random
 
 from calculateqos import get_all_pod_qos
-from helpers import cpu_convert, mem_convert, get_pod_object, get_deployment, is_valid_pod, is_valid_node, is_smaller, is_equal, time_difference, calculate_pod_req
+from helpers import cpu_convert, mem_convert, get_pod_object, get_deployment, is_valid_pod, is_valid_node, calculate_pod_req
 from pendingqueueops import create_pending_queue, sort_pending_queue
 from selectbestnode import select_node_with_preemption, select_node_without_preemption
 from checkfeasibility import feasibility_check
@@ -28,7 +28,7 @@ def scheduler():
   safety_param = 0.8
   pods_preempted = {}
 
-  # Caclulate qos of all pods and store them
+  # Calculate qos of all pods and store them
   pod_qos = get_all_pod_qos(slo)
 
   # Create Pending Queue
@@ -37,8 +37,8 @@ def scheduler():
   # Sort pending queue
   pending_queue = sort_pending_queue(pending_queue, pod_qos)
 
-  # dictionary which keeps track of pods that are binded to a node
-  is_binded = {}
+  # dictionary which keeps track of pods that are bound to a node
+  is_bound = {""}
 
   for pod in pending_queue:
 
@@ -57,6 +57,8 @@ def scheduler():
     preempt_pods_dict = {}
 
     for node in list_nodes:
+      if is_valid_node(node) == False:
+        continue
       flag, pods_to_preempt = feasibility_check(pod, node, pod_name, cpu_req,
                                                 mem_req, cpu_cap[node],
                                                 mem_cap[node], cpu_used[node],
@@ -93,17 +95,17 @@ def scheduler():
 
     bind_pod_to_node(pod, best_node)
 
-    is_binded[pod.metadata.name] = 1
-    print("Binded", pod.metadata.name, "to node", node, "\n")
+    is_bound.add(pod.metadata.name)
+    print("Bound", pod.metadata.name, "to node", node, "\n")
 
 
   pods = v1.list_namespaced_pod("default")
 
-  print("The following pods are not binded till now")
+  print("The following pods are not bound till now")
   for pod in pods.items:
     if is_valid_pod(pod.metadata.name) == False:
       continue
-    if pod.status.phase == "Pending" and pod.metadata.name not in is_binded:
+    if pod.status.phase == "Pending" and pod.metadata.name not in is_bound:
       print(pod.metadata.name)
 
   print("\n\n")
