@@ -7,19 +7,15 @@ from dateutil import parser
 import pickle
 from kubernetes.client import configuration
 import random
-from helpers import cpu_convert, mem_convert, get_pod_object, get_deployment, is_valid_pod, is_valid_node, is_smaller, is_equal, time_difference
+from helpers import cpu_convert, mem_convert, get_pod_object, get_deployment, is_valid_pod, is_valid_node
 
 # Import Kubernetes configurations
 config.load_incluster_config()
 v1 = client.CoreV1Api()
 
+
 # Function to return the stats of all nodes and the list of available nodes which can host pods
 def get_stats_nodes(pods_preempted):
-
-  # Import configuration
-  config.load_incluster_config()
-  v1 = client.CoreV1Api()
-
 
   list_node = v1.list_node()
   avail_nodes = []
@@ -48,18 +44,19 @@ def get_stats_nodes(pods_preempted):
       mem_used[node.metadata.name] = 0.0
 
       # Computing CPU used, memory used by pods in the node
-      field_selector = 'spec.nodeName=' + node.metadata.name
-      ret = v1.list_pod_for_all_namespaces(watch = False, field_selector = field_selector)
+      field_selector = "spec.nodeName=" + node.metadata.name
+      ret = v1.list_pod_for_all_namespaces(
+          watch=False, field_selector=field_selector)
       for pod in ret.items:
         if pod.metadata.name in pods_preempted:
           continue
         for container in pod.spec.containers:
           try:
-            cpu_used[node.metadata.name] += cpu_convert(container.resources.requests['cpu'])
-            mem_used += mem_convert(container.resources.requests['memory'])
+            cpu_used[node.metadata.name] += cpu_convert(
+                container.resources.requests["cpu"])
+            mem_used += mem_convert(container.resources.requests["memory"])
           except:
             pass
-
 
   # The actual cpu and memory used in the node. Will be used in future
 
