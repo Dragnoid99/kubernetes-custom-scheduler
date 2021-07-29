@@ -6,26 +6,27 @@ metadata:
     app: deployment-0-1 
 value: 3
 spec:
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: node-type
-            operator: In
-            values:
-            - available
   replicas: 1 
   selector:
     matchLabels:
       app: deployment-0-1
   template:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: node-type
+              operator: In
+              values:
+              - available    
     metadata:
       labels:
         app: deployment-0-1
         service_class: "0"
     spec:
       #schedulerName: qos-scheduler
+      priorityClassName: high-priority
       containers:
       - name: container-0-1
         image: dragnoid99/app:latest
