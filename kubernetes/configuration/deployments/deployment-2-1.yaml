@@ -9,21 +9,21 @@ spec:
   selector:
     matchLabels:
       app: deployment-2-1
-  template:
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: node-type
-              operator: In
-              values:
-              - available    
+  template: 
     metadata:
       labels:
         app: deployment-2-1
         service_class: "2"
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-type
+                operator: In
+                values:
+                - available   
       schedulerName: qos-scheduler
       priorityClassName: low-priority
       containers:
