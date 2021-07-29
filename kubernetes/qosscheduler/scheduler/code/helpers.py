@@ -21,6 +21,8 @@ def cpu_convert(s):
     ret = float(s[:-1])
   elif s[-1] == "n":
     ret = float(s[:-1]) * 0.000001
+  elif s[-1] == "u":
+    ret = float(s[:-1]) * 0.000000001
   else:
     ret = float(s) * 1000
   return ret
@@ -75,10 +77,14 @@ def is_valid_pod(pod_name):
 
 # Returns true if we can scheduler pod on the node
 def is_valid_node(node_name):
-  if node_name == "master-node":
-    return False
-  else:
-    return True
+  nodes = list_node()
+  for node in nodes.items:
+    if node.metadata.name == node_name:
+      if node.metadata.labels['node-type'] == "restricted":
+        return False
+      else:
+        return True
+  return False
 
 # Calculate pod requests
 def calculate_pod_req(pod):
