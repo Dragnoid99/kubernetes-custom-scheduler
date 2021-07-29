@@ -10,20 +10,20 @@ spec:
     matchLabels:
       app: deployment-1-1
   template:
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: node-type
-              operator: In
-              values:
-              - available    
     metadata:
       labels:
         app: deployment-1-1
         service_class: "1"
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-type
+                operator: In
+                values:
+                - available    
       schedulerName: qos-scheduler
       priorityClassName: medium-priority
       containers:
