@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-deployment-0-2
+  labels:
+    app: deployment-0-2 
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: deployment-0-2
+  template:  
+    metadata:
+      labels:
+        app: deployment-0-1
+        service_class: "0"
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-type
+                operator: In
+                values:
+                - available  
+      #schedulerName: qos-scheduler
+      priorityClassName: high-priority
+      containers:
+      - name: container-0-2
+        image: dragnoid99/app:latest
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "250m"
