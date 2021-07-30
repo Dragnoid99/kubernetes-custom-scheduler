@@ -12,4 +12,5 @@ spec:
           - backend:
               serviceName: service-deployment-0-1
               servicePort: 8000
-            path: /service-0-1/
+            path: /service-0-1/?(.*)
+            pathType: Prefix
