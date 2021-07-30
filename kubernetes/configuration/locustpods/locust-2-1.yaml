@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locust-deployment-2-1
+  labels:
+    app: locust-2-1
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: locust-2-1
+  template:
+    metadata:
+      labels:
+        app: locust-2-1
+    spec:
+      containers:
+      - name: locust-2-1
+        image: dragnoid99/locust-2-1:latest
+        ports:
+        - containerPort: 8015
