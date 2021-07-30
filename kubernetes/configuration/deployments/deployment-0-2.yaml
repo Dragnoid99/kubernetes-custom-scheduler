@@ -24,7 +24,7 @@ spec:
                 operator: In
                 values:
                 - available  
-      #schedulerName: qos-scheduler
+      schedulerName: qos-scheduler
       priorityClassName: high-priority
       containers:
       - name: container-0-2
