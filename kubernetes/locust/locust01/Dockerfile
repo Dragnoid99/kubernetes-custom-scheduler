@@ -16,4 +16,4 @@ EXPOSE 8089
 RUN chmod +x /locust_dir/sample.sh
 
 # start program 
-CMD ["./locust_dir/sample.sh"]
+CMD ["./sample.sh"]
