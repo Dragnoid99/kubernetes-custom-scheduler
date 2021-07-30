@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: locust-0-1
-        image: dragnoid99/locust:latest
+        image: dragnoid99/locust-0-1:latest
         ports:
         - containerPort: 8009
