@@ -1,2 +1,2 @@
 #!/bin/bash
-locust -f locustfile.py --host http://192.168.49.2:30001/service-0-1/polls/ --headless #-u 20 -r 20
+locust -f locustfile.py --host http:///service-0-1/polls/ --headless #-u 20 -r 20
