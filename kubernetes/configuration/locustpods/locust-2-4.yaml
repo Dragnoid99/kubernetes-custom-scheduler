@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locust-deployment-2-4
+  labels:
+    app: locust-2-4
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: locust-2-4
+  template:
+    metadata:
+      labels:
+        app: locust-2-4
+    spec:
+      containers:
+      - name: locust-2-4
+        image: dragnoid99/locust-2-4:latest
+        ports:
+        - containerPort: 8018
