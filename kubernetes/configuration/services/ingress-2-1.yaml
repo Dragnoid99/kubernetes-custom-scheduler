@@ -4,13 +4,13 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /
-  name: ingress-3-1
+  name: ingress-2-1
 spec:
   rules:
     - http:
         paths:
           - backend:
-              serviceName: service-deployment-3-1
+              serviceName: service-deployment-2-1
               servicePort: 8000
-            path: /service-3-1/?(.*)
+            path: /service-2-1/?(.*)
             pathType: Prefix
