@@ -31,10 +31,10 @@ spec:
         image: dragnoid99/app:latest
         resources:
           requests:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "512Mi"
+            cpu: "250m"
           limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "512Mi"
+            cpu: "250m"
         ports:
         - containerPort: 8000
