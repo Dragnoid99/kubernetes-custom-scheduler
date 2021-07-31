@@ -22,7 +22,7 @@ def can_preempt(pod1, pod2, pod_qos, safety_slo):
     if int(pod1_obj.metadata.labels['service_class']) < int(
         pod2_obj.metadata.labels['service_class']
     ) and pod_qos[pod1_dep] < safety_slo[int(
-        pod1_obj.metadata.labels['service_class'])]:
+        pod1_obj.metadata.labels['service_class'])]/2:
       return True
 
     if int(pod1_obj.metadata.labels['service_class']) == int(
