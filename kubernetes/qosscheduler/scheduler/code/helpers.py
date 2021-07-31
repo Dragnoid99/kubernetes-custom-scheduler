@@ -77,7 +77,7 @@ def is_valid_pod(pod_name):
 
 # Returns true if we can scheduler pod on the node
 def is_valid_node(node_name):
-  nodes = list_node()
+  nodes = v1.list_node()
   for node in nodes.items:
     if node.metadata.name == node_name:
       if node.metadata.labels['node-type'] == "restricted":
