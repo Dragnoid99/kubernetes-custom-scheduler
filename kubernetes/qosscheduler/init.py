@@ -25,14 +25,14 @@ dbfile = open('scheduler/files/deployment_qos_metric', 'wb')
 pickle.dump(a,dbfile)
 dbfile.close()
 
-dbfile = open('../files/deployment_run_time', 'wb')
+dbfile = open('scheduler/files/deployment_run_time', 'wb')
 pickle.dump(a, dbfile)
 dbfile.close()
 
-dbfile = open('../files/deployment_pause_time', 'wb')
+dbfile = open('scheduler/files/deployment_pause_time', 'wb')
 pickle.dump(a, dbfile)
 dbfile.close()
 
-dbfile = open('../files/deployment_qos', 'wb')
+dbfile = open('scheduler/files/deployment_qos', 'wb')
 pickle.dump(a, dbfile)
 dbfile.close()
