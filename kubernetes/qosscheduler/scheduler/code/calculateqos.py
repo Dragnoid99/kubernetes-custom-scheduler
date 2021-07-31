@@ -34,11 +34,23 @@ def _generate_logs():
   tmp_json_list = []
   json_list = []
   tmp_list = []
+  
+  flag2 = 0
 
   # Parse the logs of eventrouter as string
   for i in range(len(logs)):
     flag = 0
 
+    if cnt_level!=0 and logs[i] == "\"" and logs[i-1] != "\\":
+      if flag2 == 1:
+        flag2 = 0
+      else:
+        flag2 = 1
+    
+    if flag2 == 1:
+      log_string += logs[i]
+      continue
+    
     if logs[i] == '{':
       cnt_level += 1
 
