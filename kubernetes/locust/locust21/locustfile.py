@@ -1,6 +1,7 @@
 import math
 from locust import HttpUser, TaskSet, task, constant
 from locust import LoadTestShape
+import pickle
 
 
 class UserTasks(TaskSet):
@@ -24,11 +25,15 @@ class DoubleWave(LoadTestShape):
     users at each time.
     For now, this program is generating load periodically with time period time_limit
     """
-    min_users = 10
-    peak_one_users = 100
-    peak_two_users = 80
-    time_limit = 600
+    
+    dbfile = open('file', 'rb')
+    arr = pickle.load(dbfile)
+    dbfile.close()
 
+    min_users = arr['min_users']
+    peak_one_users = arr['peak_one_users']
+    peak_two_users = arr['peak_two_users']
+    time_limit = arr['time_limit']
 
     def tick(self):
         run_time = round(self.get_run_time())
