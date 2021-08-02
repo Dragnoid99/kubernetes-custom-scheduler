@@ -62,17 +62,20 @@ def _generate_logs():
       cnt_level -= 1
 
     if cnt_level == 0 and flag == 1:
-      # In this case, one of the entries of logs has been parsed and it's corresponding string form is stored in log_string
-      json_obj = json.loads(log_string)
-      log_string = ""
-      json_obj2 = {}
-      json_obj2['action'] = json_obj['event']['reason']
-      json_obj2['involvedObject'] = json_obj['event']['involvedObject']['name']
-      json_obj2['timestamp'] = json_obj['event']['firstTimestamp']
-      tmp_list.append((parser.parse(json_obj['event']['firstTimestamp']), count_entry))
-
-      tmp_json_list.append(json_obj2)
-      count_entry += 1
+      try:
+        # In this case, one of the entries of logs has been parsed and it's corresponding string form is stored in log_string
+        json_obj = json.loads(log_string)
+        log_string = ""
+        json_obj2 = {}
+        json_obj2['action'] = json_obj['event']['reason']
+        json_obj2['involvedObject'] = json_obj['event']['involvedObject']['name']
+        json_obj2['timestamp'] = json_obj['event']['firstTimestamp']
+        if json_obj2['timestamp'] !=  Null:
+          tmp_list.append((parser.parse(json_obj['event']['firstTimestamp']), count_entry))
+          tmp_json_list.append(json_obj2)
+          count_entry += 1
+      except:
+        pass
 
   sorted(tmp_list)
 
