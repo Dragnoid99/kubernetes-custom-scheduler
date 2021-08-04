@@ -15,14 +15,6 @@ from calculateqoshelper import get_pod_deployments, get_pod_creation_timestamps,
 config.load_incluster_config()
 v1 = client.CoreV1Api()
 
-def sort(tmp_list):
-  for i in range(len(tmp_list)):
-    for j in range(len(tmp_list)-1):
-      if tmp_list[j][0]>tmp_list[j+1][0]:
-        tmp = tmp_list[j]
-        tmp_list[j] = tmp_list[j+1]
-        tmp_list[j+1] = tmp
-
 # Returns the logs of all events of the cluster
 def _generate_logs():
   pod_namespace = "kube-system"
@@ -45,7 +37,8 @@ def _generate_logs():
   
   # is_message keeps the flag entry for is we are inside the key or value in key-value pair
   is_message = 0
-
+  orig_date = datetime.datetime(1970,1,1,tzinfo = datetime.datetime.utc)
+  
   # Parse the logs of eventrouter as string
   for i in range(len(logs)):
     # in_entry keeps the flag which stores if it is in some json entry
@@ -81,13 +74,13 @@ def _generate_logs():
         json_obj2['involvedObject'] = json_obj['event']['involvedObject']['name']
         json_obj2['timestamp'] = json_obj['event']['firstTimestamp']
         if json_obj2['timestamp'] !=  None:
-          tmp_list.append((parser.parse(json_obj['event']['firstTimestamp']), count_entry))
+          tmp_list.append(((parser.parse(json_obj['event']['firstTimestamp'])-orig_date).total_seconds(), count_entry))
           tmp_json_list.append(json_obj2)
           count_entry += 1
       except:
         pass
 
-  sort(tmp_list)
+  tmp_list.sort()
 
   for i in range(len(tmp_list)):
     json_list.append(tmp_json_list[tmp_list[i][1]])
