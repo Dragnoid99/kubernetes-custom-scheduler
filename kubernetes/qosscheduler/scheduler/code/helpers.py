@@ -80,10 +80,13 @@ def is_valid_node(node_name):
   nodes = v1.list_node()
   for node in nodes.items:
     if node.metadata.name == node_name:
-      if node.metadata.labels['node-type'] == "restricted":
+      try:
+        if node.metadata.labels['node-type'] == "available":
+          return True
+        else:
+          return False
+      except:
         return False
-      else:
-        return True
   return False
 
 # Calculate pod requests
