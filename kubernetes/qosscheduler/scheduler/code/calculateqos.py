@@ -35,19 +35,21 @@ def _generate_logs():
   json_list = []
   tmp_list = []
   
-  flag2 = 0
+  # is_message keeps the flag entry for is we are inside the key or value in key-value pair
+  is_message = 0
 
   # Parse the logs of eventrouter as string
   for i in range(len(logs)):
-    flag = 0
+    # in_entry keeps the flag which stores if it is in some json entry
+    in_entry = 0
 
     if cnt_level!=0 and logs[i] == "\"" and logs[i-1] != "\\":
-      if flag2 == 1:
-        flag2 = 0
+      if is_message == 1:
+        is_message = 0
       else:
-        flag2 = 1
+        is_message = 1
     
-    if flag2 == 1:
+    if is_message == 1:
       log_string += logs[i]
       continue
     
@@ -55,13 +57,13 @@ def _generate_logs():
       cnt_level += 1
 
     if cnt_level != 0:
-      flag = 1
+      in_entry = 1
       log_string += logs[i]
 
     if logs[i] == '}':
       cnt_level -= 1
 
-    if cnt_level == 0 and flag == 1:
+    if cnt_level == 0 and in_entry == 1:
       try:
         # In this case, one of the entries of logs has been parsed and it's corresponding string form is stored in log_string
         json_obj = json.loads(log_string)
@@ -70,7 +72,7 @@ def _generate_logs():
         json_obj2['action'] = json_obj['event']['reason']
         json_obj2['involvedObject'] = json_obj['event']['involvedObject']['name']
         json_obj2['timestamp'] = json_obj['event']['firstTimestamp']
-        if json_obj2['timestamp'] !=  Null:
+        if json_obj2['timestamp'] !=  None:
           tmp_list.append((parser.parse(json_obj['event']['firstTimestamp']), count_entry))
           tmp_json_list.append(json_obj2)
           count_entry += 1
