@@ -105,8 +105,19 @@ def scheduler():
     if pod.status.phase == "Pending" and pod.metadata.name not in is_bound:
       print(pod.metadata.name)
 
+pods = v1.list_namespaced_pod("default")
+for pod in pods.items:
+  if is_valid_pod(pod.metadata.name) == True:
+    if pod.status.phase == "Failed":
+      try:
+        pods_to_preempt = []
+        pods_to_preempt.append(pod)
+        pods_preempted = preempt_pods(pods_to_preempt, pods_preempted)
+      except:
+        pass
+
   print("\n\n")
-
-
+  
+  
 if __name__ == "__main__":
   scheduler()
