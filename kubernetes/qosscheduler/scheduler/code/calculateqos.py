@@ -37,7 +37,7 @@ def _generate_logs():
   
   # is_message keeps the flag entry for is we are inside the key or value in key-value pair
   is_message = 0
-  orig_date = datetime.datetime(1970,1,1,tzinfo = datetime.datetime.utc)
+  orig_date = datetime.datetime(1970,1,1,tzinfo = datetime.timezone.utc)
   
   # Parse the logs of eventrouter as string
   for i in range(len(logs)):
