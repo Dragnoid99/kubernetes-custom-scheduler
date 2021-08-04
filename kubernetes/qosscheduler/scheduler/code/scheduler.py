@@ -7,6 +7,7 @@ from dateutil import parser
 import pickle
 from kubernetes.client import configuration
 import random
+from config import *
 
 from calculateqos import get_all_pod_qos
 from helpers import cpu_convert, mem_convert, get_pod_object, get_deployment, is_valid_pod, is_valid_node, calculate_pod_req
@@ -22,10 +23,6 @@ v1 = client.CoreV1Api()
 
 def scheduler():
 
-  number_of_service_class = 3
-  slo = [0.99, 0.90, 0.50]
-  safety_slo = [200, 200, 100]
-  safety_param = 0.8
   pods_preempted = {}
 
   # Calculate qos of all pods and store them
