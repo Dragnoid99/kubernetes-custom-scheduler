@@ -15,6 +15,14 @@ from calculateqoshelper import get_pod_deployments, get_pod_creation_timestamps,
 config.load_incluster_config()
 v1 = client.CoreV1Api()
 
+def sort(tmp_list):
+  for i in range(len(tmp_list)):
+    for j in range(len(tmp_list)-1):
+      if tmp_list[j][0]>tmp_list[j+1][0]:
+        tmp = tmp_list[j]
+        tmp_list[j] = tmp_list[j+1]
+        tmp_list[j+1] = tmp
+
 # Returns the logs of all events of the cluster
 def _generate_logs():
   pod_namespace = "kube-system"
@@ -79,7 +87,7 @@ def _generate_logs():
       except:
         pass
 
-  sorted(tmp_list)
+  sort(tmp_list)
 
   for i in range(len(tmp_list)):
     json_list.append(tmp_json_list[tmp_list[i][1]])
