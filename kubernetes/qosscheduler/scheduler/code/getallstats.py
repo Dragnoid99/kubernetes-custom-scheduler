@@ -54,7 +54,8 @@ def get_stats_nodes(pods_preempted):
           try:
             cpu_used[node.metadata.name] += cpu_convert(
                 container.resources.requests["cpu"])
-            mem_used += mem_convert(container.resources.requests["memory"])
+            mem_used[node.metadata.name] += mem_convert(
+                container.resources.requests["memory"])
           except:
             pass
 
