@@ -110,10 +110,14 @@ for pod in pods.items:
   if is_valid_pod(pod.metadata.name) == True:
     if pod.status.phase == "Failed":
       try:
+        print("OOM, OOC pod = ", pod.metadata.name)
         pods_to_preempt = []
         pods_to_preempt.append(pod)
-        pods_preempted = preempt_pods(pods_to_preempt, pods_preempted)
+        z = {}
+        pods_preempted = preempt_pods(pods_to_preempt, z)
+        print("Successfully Preempted")
       except:
+        print("Failed to Preempt")
         pass
 
   print("\n\n")
